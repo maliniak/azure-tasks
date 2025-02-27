@@ -41,7 +41,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build \
-          -build-arg ENV=${{ github.event.inputs.environment || 'dev' }} \
+          --build-arg ENV=${{ github.event.inputs.environment || 'dev' }} \
           -t ${{ env.ACR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.environment || 'dev' }} \
           ${{ env.APP_DIR }}
           docker push ${{ env.ACR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.environment || 'dev' }}
