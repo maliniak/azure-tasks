@@ -65,11 +65,11 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Terraform Init
-        working-directory: deployments/${{ env.TERRAFORM_DIR }}
+        working-directory: deployments/${{ github.event.inputs.environment || 'dev' }}
         run: terraform init
 
       - name: Terraform Apply
-        working-directory: deployments/${{ env.TERRAFORM_DIR }}
+        working-directory: deployments/${{ github.event.inputs.environment || 'dev' }}
         run: |
           terraform apply -auto-approve
 
