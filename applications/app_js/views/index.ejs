@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Message App</title>
+</head>
+<body>
+  <h1>Messages</h1>
+  <form action="/add" method="POST">
+    <input type="text" name="content" placeholder="Enter a message" required>
+    <button type="submit">Add</button>
+  </form>
+  <ul>
+    <% messages.forEach(message => { %>
+      <li><%= message.content %></li>
+    <% }); %>
+  </ul>
+</body>
+</html>
