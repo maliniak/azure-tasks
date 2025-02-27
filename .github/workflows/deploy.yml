@@ -12,7 +12,7 @@ env:
   ACR_REGISTRY: azureapps.azurecr.io
   IMAGE_NAME: nodejs-app
   TERRAFORM_DIR: terraform
-  APP_DIR: app
+  APP_DIR: applications/app_js
 
 jobs:
   build-and-push:
@@ -27,7 +27,7 @@ jobs:
       - name: Login to Azure Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ACR_REGISTRY }}
+          login-server: ${{ env.ACR_REGISTRY }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
@@ -36,7 +36,6 @@ jobs:
         with:
           context: ${{ env.APP_DIR }}
           push: true
-          tags: ${{ env.ACR_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.environment || 'dev' }}
           build-args: |
             ENV=${{ github.event.inputs.environment || 'dev' }}
 
