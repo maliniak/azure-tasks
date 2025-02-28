@@ -75,7 +75,9 @@ resource "azurerm_linux_web_app" "app" {
   site_config {
     always_on = true
   }
-  
+
+  container_registry_use_managed_identity = true
+
   app_settings = {
     "DB_HOST"     = azurerm_mysql_flexible_server.mysql.fqdn
     "DB_USER"     = var.db_admin_username
