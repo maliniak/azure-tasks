@@ -5,16 +5,24 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_subnet" "subnet" {
-  name                 = "${var.environment}-subnet"
+resource "azurerm_subnet" "endpoint_subnet" {
+  name                 = "${var.environment}-endpoint-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = [var.subnet_address_prefix]
+  address_prefixes     = [var.subnet_address_endpoint_prefix]
+}
+
+resource "azurerm_subnet" "app_subnet" {
+  name                 = "${var.environment}-app-subnet"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = [var.subnet_address_app_prefix]
 
   delegation {
-    name = "delegation"
+    name = "webapp-delegation"
     service_delegation {
       name = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
     }
   }
 }

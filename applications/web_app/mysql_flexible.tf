@@ -27,13 +27,17 @@ resource "azurerm_mysql_flexible_server" "mysql" {
     size_gb = 20
   }
   backup_retention_days = 7
+  #delegated_subnet_id = azurerm_subnet.subnet.id
+  private_dns_zone_id = azurerm_private_dns_zone.dns_zone.id
+
+  depends_on = [azurerm_private_dns_zone_virtual_network_link.dns_link]
 }
 
 resource "azurerm_private_endpoint" "mysql_endpoint" {
   name                = "${var.environment}-mysql-private-endpoint"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  subnet_id           = azurerm_subnet.subnet.id
+  subnet_id           = azurerm_subnet.endpoint_subnet.id
 
   private_service_connection {
     name                           = "mysql-connection"
@@ -57,7 +61,7 @@ resource "azurerm_service_plan" "app_plan" {
 }
 
 resource "azurerm_linux_web_app" "app" {
-  name                = "${var.environment}-nodejs-app"
+  name                = "${var.environment}-nodejs-app-azure-task"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   service_plan_id     = azurerm_service_plan.app_plan.id
@@ -78,7 +82,7 @@ resource "azurerm_linux_web_app" "app" {
     type = "SystemAssigned"
   }
 
-  virtual_network_subnet_id = azurerm_subnet.subnet.id
+  virtual_network_subnet_id = azurerm_subnet.app_subnet.id
 }
 
 resource "azurerm_key_vault_access_policy" "app_policy" {

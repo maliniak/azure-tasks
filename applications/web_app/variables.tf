@@ -15,10 +15,14 @@ variable "vnet_address_space" {
   default     = "10.0.0.0/16"
 }
 
-variable "subnet_address_prefix" {
+variable "subnet_address_endpoint_prefix" {
   description = "Address prefix for the subnet"
   type        = string
-  default     = "10.0.1.0/24"
+}
+
+variable "subnet_address_app_prefix" {
+  description = "Address prefix for the subnet"
+  type        = string
 }
 
 variable "db_admin_username" {
