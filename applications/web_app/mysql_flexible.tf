@@ -16,7 +16,7 @@ data "azurerm_key_vault_secret" "mysql_password" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_mysql_flexible_server" "mysql" {
-  name                   = "${var.environment}-mysql-server"
+  name                   = "${var.environment}-mysql-server-azure-task"
   resource_group_name    = azurerm_resource_group.rg.name
   location               = azurerm_resource_group.rg.location
   administrator_login    = "adminuser"
