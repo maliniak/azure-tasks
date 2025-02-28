@@ -15,9 +15,10 @@ const dbConfig = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     ssl: {
-        ca: fs.readFileSync(path.join(__dirname, 'BaltimoreCyberTrustRoot.crt.pem')),
+        ca: fs.readFileSync(path.join(__dirname, 'DigiCertGlobalRootCA.crt.pem')),
         rejectUnauthorized: true
-    }
+    },
+    connectTimeout: 30000
 };
 
 // Health check endpoint
