@@ -38,6 +38,8 @@ resource "azurerm_mysql_flexible_server" "mysql" {
       ]
     }
 
+  zone = 2
+
 }
 
 resource "azurerm_private_endpoint" "mysql_endpoint" {
