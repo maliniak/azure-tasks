@@ -83,6 +83,10 @@ resource "azurerm_linux_web_app" "app" {
     "DB_NAME"     = "mydb"
   }
 
+  application_logs {
+        file_system_level = "Verbose"
+  }
+
   identity {
     type = "SystemAssigned"
   }
