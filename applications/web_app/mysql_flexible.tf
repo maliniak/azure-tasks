@@ -74,17 +74,19 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     always_on = true
-    health_check_path = "/health"
   }
+  
   app_settings = {
     "DB_HOST"     = azurerm_mysql_flexible_server.mysql.fqdn
     "DB_USER"     = var.db_admin_username
     "DB_PASSWORD" = "@Microsoft.KeyVault(SecretUri=${data.azurerm_key_vault_secret.mysql_password.id})"
     "DB_NAME"     = "mydb"
   }
-
-  application_logs {
-        file_system_level = "Verbose"
+  logs {
+    application_logs {
+          file_system_level = "Verbose"
+    }
+    detailed_error_messages = true
   }
 
   identity {
