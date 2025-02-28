@@ -73,9 +73,8 @@ resource "azurerm_linux_web_app" "app" {
   service_plan_id     = azurerm_service_plan.app_plan.id
 
   site_config {
-    application_stack {
-      node_version = "18-lts"
-    }
+    always_on = true
+    health_check_path = "/health"
   }
   app_settings = {
     "DB_HOST"     = azurerm_mysql_flexible_server.mysql.fqdn
