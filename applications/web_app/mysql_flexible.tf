@@ -27,10 +27,17 @@ resource "azurerm_mysql_flexible_server" "mysql" {
     size_gb = 20
   }
   backup_retention_days = 7
-  #delegated_subnet_id = azurerm_subnet.subnet.id
+  #delegated_subnet_id = azurerm_subnet.app_subnet.id
   private_dns_zone_id = azurerm_private_dns_zone.dns_zone.id
+  #public_network_access_enabled = false
 
   depends_on = [azurerm_private_dns_zone_virtual_network_link.dns_link]
+    lifecycle {
+      ignore_changes = [
+        private_dns_zone_id
+      ]
+    }
+
 }
 
 resource "azurerm_private_endpoint" "mysql_endpoint" {
@@ -74,9 +81,9 @@ resource "azurerm_linux_web_app" "app" {
 
   site_config {
     always_on = true
+    container_registry_use_managed_identity = true
   }
 
-  container_registry_use_managed_identity = true
 
   app_settings = {
     "DB_HOST"     = azurerm_mysql_flexible_server.mysql.fqdn
@@ -94,6 +101,12 @@ resource "azurerm_linux_web_app" "app" {
   identity {
     type = "SystemAssigned"
   }
+
+   lifecycle {
+     ignore_changes = [
+       app_settings
+     ]
+   }
 
   virtual_network_subnet_id = azurerm_subnet.app_subnet.id
 }
