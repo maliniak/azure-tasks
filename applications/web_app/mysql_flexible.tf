@@ -50,6 +50,12 @@ resource "azurerm_private_endpoint" "mysql_endpoint" {
     name                 = "mysql-dns-zone-group"
     private_dns_zone_ids = [azurerm_private_dns_zone.dns_zone.id]
   }
+
+  lifecycle {
+    ignore_changes = [
+      private_service_connection
+    ]
+  }
 }
 
 resource "azurerm_service_plan" "app_plan" {

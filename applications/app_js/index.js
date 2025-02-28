@@ -12,10 +12,19 @@ const dbConfig = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
+    ssl: {
+        rejectUnauthorized: true
+    }
 };
 
 // Initialize database and table
 async function initDb() {
+    console.log('Connecting to DB with config:', {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        database: process.env.DB_NAME
+    });
+
     const db = await mysql.createConnection({ ...dbConfig, database: null });
     await db.query(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database}`);
     await db.end();
